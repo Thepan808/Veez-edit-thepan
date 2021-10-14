@@ -375,7 +375,7 @@ async def cblamp(_, query: CallbackQuery):
 /deauth - Não autoriza pra não usar o bot
 /control - Abrir o panel da call(Reproduções)
 /delcmd (on | off) - Ative / Desative del cmd 
-/musicplayer (on / off) - Ative / Desatice music player pra tocar ou não tocar nada no grupo
+/music (on / off) - Ative / Desatice music player pra tocar ou não tocar nada no grupo
 
 ⚡ __Powered por {BOT_NAME} A.I__""",
         reply_markup=InlineKeyboardMarkup(
