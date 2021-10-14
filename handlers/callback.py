@@ -268,23 +268,23 @@ async def cbdelcmds(_, query: CallbackQuery):
 @Client.on_callback_query(filters.regex("cbcmds"))
 async def cbhelps(_, query: CallbackQuery):
     await query.edit_message_text(
-        f"""✨ **Hello fiatin glingo** [{query.message.chat.first_name}](tg://user?id={query.message.chat.id}) !
+        f"""✨ **Olá** [{query.message.chat.first_name}](tg://user?id={query.message.chat.id}) !
 
-» **press the button below to read the explanation and see the list of available commands !**
+» **Aperte-se no botão de ver os comandos, primeramente em Básico de Guia !**
 
 ⚡ __Powered by {BOT_NAME} A.I__""",
         reply_markup=InlineKeyboardMarkup(
             [
                 [
-                    InlineKeyboardButton("📚 Basic Cmd", callback_data="cblocal"),
-                    InlineKeyboardButton("📕 Advanced Cmd", callback_data="cbadven"),
+                    InlineKeyboardButton("📚 Comandos Básicos", callback_data="cblocal"),
+                    InlineKeyboardButton("📕 Comandos Avançados", callback_data="cbadven"),
                 ],
                 [
-                    InlineKeyboardButton("📘 Admin Cmd", callback_data="cblamp"),
-                    InlineKeyboardButton("📗 Sudo Cmd", callback_data="cblab"),
+                    InlineKeyboardButton("📘 Comandos dos Admins", callback_data="cblamp"),
+                    InlineKeyboardButton("📗 Comandos dos Sudos", callback_data="cblab"),
                 ],
-                [InlineKeyboardButton("📙 Owner Cmd", callback_data="cbmoon")],
-                [InlineKeyboardButton("🔙 Go Back", callback_data="cbstart")],
+                [InlineKeyboardButton("📙 Comandos do Pae(CRIADOR)", callback_data="cbmoon")],
+                [InlineKeyboardButton("🔙 Voltar", callback_data="cbstart")],
             ]
         ),
     )
@@ -293,16 +293,16 @@ async def cbhelps(_, query: CallbackQuery):
 @Client.on_callback_query(filters.regex("cbhowtouse"))
 async def cbguides(_, query: CallbackQuery):
     await query.edit_message_text(
-        f"""❓ HOW TO USE THIS BOT:
+        f"""❓ COMO USAR O BOT:
 
-1.) first, add me to your group.
-2.) then promote me as admin and give all permissions except anonymous admin.
-3.) add @{ASSISTANT_NAME} to your group or type /join to invite her.
-4.) turn on the voice chat first before start to play music.
+1.) Primeiro, adicione o bot no grupo ou chame o criador pra por.
+2.) Dê adm completo pra o bot ( Necessário...) Não precisa por em modo Anonymous.
+3.) Adicione o @{ASSISTANT_NAME} Em seu grupo ou /join pra convidar.
+4.) Agora só ativar o chat e pôr o cabaré pra dançar.
 
-⚡ __Powered by {BOT_NAME} A.I__""",
+⚡ __Powered por {BOT_NAME} A.I__""",
         reply_markup=InlineKeyboardMarkup(
-            [[InlineKeyboardButton("🔙 Go Back", callback_data="cbstart")]]
+            [[InlineKeyboardButton("🔙 Voltar", callback_data="cbstart")]]
         ),
     )
 
@@ -310,20 +310,20 @@ async def cbguides(_, query: CallbackQuery):
 @Client.on_callback_query(filters.regex("cblocal"))
 async def cblocal(_, query: CallbackQuery):
     await query.edit_message_text(
-        f"""🏮 **here is the basic commands**
+        f"""🏮 **Comandos Básicos**
 
 🎧 [ GROUP VC CMD ]
 
-/play (song name) - play song from youtube
-/ytp (song name) - play song directly from youtube 
-/stream (reply to audio) - play song using audio file
-/playlist - show the list song in queue
-/song (song name) - download song from youtube
-/search (video name) - search video from youtube detailed
-/vsong (video name) - download video from youtube detailed
-/lyric - (song name) lyrics scrapper
+/play (Nome da música) - Para tocar a música via youtube
+/ytp (Nome da música) - Para tocar a música direto via youtube 
+/stream (Marque a música/áudio file) - Toque a música usando audio file mp3
+/playlist - Para ver a faixas de músicas que irão ser reproduzidas
+/song (Nome da música) - Para baixar a música via youtube
+/search (Nome do vídeo) - Para pesquisar videos via youtube em detalhes
+/vsong (Nome do vídeo - Para baixar um vídeo via youtube
+/lyric - (Nome da música para baixar a letra dela. 
 
-🎧 [ CHANNEL VC CMD ]
+🎧 [ Comandos pra canais (Nem é útil bastante) ]
 
 /cplay - stream music on channel voice chat
 /cplayer - show the song in streaming
@@ -334,9 +334,9 @@ async def cblocal(_, query: CallbackQuery):
 /refresh - refresh the admin cache
 /ubjoinc - invite the assistant for join to your channel
 
-⚡ __Powered by {BOT_NAME} A.I__""",
+⚡ __Powered por {BOT_NAME} A.I__""",
         reply_markup=InlineKeyboardMarkup(
-            [[InlineKeyboardButton("🔙 Go Back", callback_data="cbcmds")]]
+            [[InlineKeyboardButton("🔙 Voltar", callback_data="cbcmds")]]
         ),
     )
 
@@ -344,17 +344,17 @@ async def cblocal(_, query: CallbackQuery):
 @Client.on_callback_query(filters.regex("cbadven"))
 async def cbadven(_, query: CallbackQuery):
     await query.edit_message_text(
-        f"""🏮 **here is the advanced commands**
+        f"""🏮 **Comandos Avançados**
 
-/start (in group) - see the bot alive status
-/reload - reload bot and refresh the admin list
-/ping - check the bot ping status
-/uptime - check the bot uptime status
-/id - show the group/user id & other
+/start (Em grupo) - Alive Status do bot
+/reload - Atualizar a lista dos admins
+/ping - check ping status
+/uptime - check o bot uptime status
+/id - check/user id de grupo, seu id e etc.
 
-⚡ __Powered by {BOT_NAME} A.I__""",
+⚡ __Powered por {BOT_NAME} A.I__""",
         reply_markup=InlineKeyboardMarkup(
-            [[InlineKeyboardButton("🔙 Go Back", callback_data="cbcmds")]]
+            [[InlineKeyboardButton("🔙 Voltar", callback_data="cbcmds")]]
         ),
     )
 
@@ -362,24 +362,24 @@ async def cbadven(_, query: CallbackQuery):
 @Client.on_callback_query(filters.regex("cblamp"))
 async def cblamp(_, query: CallbackQuery):
     await query.edit_message_text(
-        f"""🏮 **here is the admin commands**
+        f"""🏮 **Comandos de admins**
 
-/player - show the music playing status
-/pause - pause the music streaming
-/resume - resume the music was paused
-/skip - skip to the next song
-/end - stop music streaming
-/join - invite userbot join to your group
-/leave - order the userbot to leave your group
-/auth - authorized user for using music bot
-/deauth - unauthorized for using music bot
-/control - open the player settings panel
-/delcmd (on | off) - enable / disable del cmd feature
-/musicplayer (on / off) - disable / enable music player in your group
+/player - Abrir o Player e ver qual está tocando
+/pause - Pause a música
+/resume - Resume a música
+/skip - Pular a música
+/end - Parar a música
+/join - Convidar o userbot para o seu grupo
+/leave - Retirar o userbot do grupo
+/auth - Autoriza pra usar o bot
+/deauth - Não autoriza pra não usar o bot
+/control - Abrir o panel da call(Reproduções)
+/delcmd (on | off) - Ative / Desative del cmd 
+/musicplayer (on / off) - Ative / Desatice music player pra tocar ou não tocar nada no grupo
 
-⚡ __Powered by {BOT_NAME} A.I__""",
+⚡ __Powered por {BOT_NAME} A.I__""",
         reply_markup=InlineKeyboardMarkup(
-            [[InlineKeyboardButton("🔙 Go Back", callback_data="cbcmds")]]
+            [[InlineKeyboardButton("🔙 Voltar", callback_data="cbcmds")]]
         ),
     )
 
@@ -387,17 +387,17 @@ async def cblamp(_, query: CallbackQuery):
 @Client.on_callback_query(filters.regex("cblab"))
 async def cblab(_, query: CallbackQuery):
     await query.edit_message_text(
-        f"""🏮 **here is the sudo commands**
+        f"""🏮 **Comandos Sudos**
 
-/leaveall - order the assistant to leave from all group
-/stats - show the bot statistic
-/rmd - remove all downloaded files
-/eval (query) - execute code
-/sh (query) - run code
+/leaveall - Userbot sairá de todos os grupo
+/stats - Ver a estática
+/rmd - remove downloads das músicas que foram baixada
+/eval (Ignore) - execute code
+/sh (Ignore) - run code
 
-⚡ __Powered by {BOT_NAME} A.I__""",
+⚡ __Powered por {BOT_NAME} A.I__""",
         reply_markup=InlineKeyboardMarkup(
-            [[InlineKeyboardButton("🔙 Go Back", callback_data="cbcmds")]]
+            [[InlineKeyboardButton("🔙 Voltar", callback_data="cbcmds")]]
         ),
     )
 
@@ -405,18 +405,18 @@ async def cblab(_, query: CallbackQuery):
 @Client.on_callback_query(filters.regex("cbmoon"))
 async def cbmoon(_, query: CallbackQuery):
     await query.edit_message_text(
-        f"""🏮 **here is the owner commands**
+        f"""🏮 **Comandos do Pae**
 
-/stats - show the bot statistic
-/broadcast - send a broadcast message from bot
-/block (user id - duration - reason) - block user for using your bot
-/unblock (user id - reason) - unblock user you blocked for using your bot
-/blocklist - show you the list of user was blocked for using your bot
+/stats - Ver a estática
+/broadcast - Mandar um recado pra todos via bot
+/block (user id - duração - reação - block no usuário pra não usar o bot
+/unblock (user id - reason) - desblock no usuário pra usar novamente o bot 
+/blocklist - Lista de pessoas bloqueadas
 
-📝 note: all commands owned by this bot can be executed by the owner of the bot without any exceptions.
+📝 Nota: Nem tente fazer gracinha, fazendo flood e tal não irá passar menos de 1 min, que irá ser banido do bot e dos grupos que estiver :) espero que não seja demente.
 
-⚡ __Powered by {BOT_NAME} A.I__""",
+⚡ __Powered por {BOT_NAME} A.I__""",
         reply_markup=InlineKeyboardMarkup(
-            [[InlineKeyboardButton("🔙 Go Back", callback_data="cbcmds")]]
+            [[InlineKeyboardButton("🔙 Voltar", callback_data="cbcmds")]]
         ),
     )
