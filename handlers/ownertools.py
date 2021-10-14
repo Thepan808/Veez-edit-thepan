@@ -42,7 +42,7 @@ async def botstats(_, message: Message):
     disk_usage = psutil.disk_usage("/").percent
     total_users = await db.total_users_count()
     await message.reply_text(
-        text=f"**📊 stats of @{BOT_USERNAME}** \n\n**🤖 bot version:** `{__version__}` \n\n**🙎🏼 total users:** \n » **on bot pm:** `{total_users}` \n\n**💾 disk usage:** \n » **disk space:** `{total}` \n » **used:** `{used}({disk_usage}%)` \n » **free:** `{free}` \n\n**🎛 hardware usage:** \n » **CPU usage:** `{cpu_usage}%` \n » **RAM usage:** `{ram_usage}%`",
+        text=f"**📊 Status do bot @{BOT_USERNAME}** \n\n**🤖 Bot na versão:** `{__version__}` \n\n**🙎🏼 total de usuários:** \n » **on bot pm:** `{total_users}` \n\n**💾 disk usado:** \n » **disk space:** `{total}` \n » **used:** `{used}({disk_usage}%)` \n » **grátis:** `{free}` \n\n**🎛 hardware usada:** \n » **CPU usage:** `{cpu_usage}%` \n » **RAM usada:** `{ram_usage}%`",
         parse_mode="Markdown",
         quote=True,
     )
@@ -71,23 +71,23 @@ async def ban(c: Client, m: Message):
         user_id = int(m.command[1])
         ban_duration = m.command[2]
         ban_reason = " ".join(m.command[3:])
-        ban_log_text = f"🚷 **banned user !** \n\nuser id: `{user_id}` \nduration: `{ban_duration}` \nreason: `{ban_reason}`"
+        ban_log_text = f"🚷 **Meliante banido !** \n\nuser id: `{user_id}` \nduration: `{ban_duration}` \nreason: `{ban_reason}`"
         try:
             await c.send_message(
                 user_id,
-                f"😕 sorry, you're banned!** \n\nreason: `{ban_reason}` \nduration: `{ban_duration}` day(s). \n\n**💬 message from owner: ask in @{GROUP_SUPPORT} if you think this was an mistake.",
+                f"😕 Afi desculpinha, você tá banido miséria!** \n\nreason: `{ban_reason}` \nduration: `{ban_duration}` day(s). \n\n**💬 message from owner: ask in @{GROUP_SUPPORT} if you think this was an mistake.",
             )
             ban_log_text += "\n\n✅ this notification was sent to that user"
         except:
             traceback.print_exc()
-            ban_log_text += f"\n\n❌ **failed sent this notification to that user** \n\n`{traceback.format_exc()}`"
+            ban_log_text += f"\n\n❌ **Falhou a notificação para o user** \n\n`{traceback.format_exc()}`"
         await db.ban_user(user_id, ban_duration, ban_reason)
         print(ban_log_text)
         await m.reply_text(ban_log_text, quote=True)
     except:
         traceback.print_exc()
         await m.reply_text(
-            f"❌ an error occoured, traceback is given below:\n\n`{traceback.format_exc()}`",
+            f"❌ Ocorreu um erro, traceback is given below:\n\n`{traceback.format_exc()}`",
             quote=True,
         )
 
@@ -103,9 +103,9 @@ async def unban(c: Client, m: Message):
         return
     try:
         user_id = int(m.command[1])
-        unban_log_text = f"🆓 **unbanned user !** \n\n**user id:**{user_id}"
+        unban_log_text = f"😒 **Desbanido o guei !** \n\n**user id:**{user_id}"
         try:
-            await c.send_message(user_id, "🎊 congratulations, you was unbanned!")
+            await c.send_message(user_id, "🙄 Que merda hein, você foi desbanido!")
             unban_log_text += "\n\n✅ this notification was sent to that user"
         except:
             traceback.print_exc()
@@ -134,8 +134,8 @@ async def _banned_usrs(_, m: Message):
         banned_on = banned_user["ban_status"]["banned_on"]
         ban_reason = banned_user["ban_status"]["ban_reason"]
         banned_usr_count += 1
-        text += f"🆔 **user id**: `{user_id}`\n⏱ **duration**: `{ban_duration}`\n🗓 **banned date**: `{banned_on}`\n💬 **reason**: `{ban_reason}`\n\n"
-    reply_text = f"🚷 **total banned:** `{banned_usr_count}`\n\n{text}"
+        text += f"🆔 **Usuário id**: `{user_id}`\n⏱ **Duração**: `{ban_duration}`\n🗓 **Data banido**: `{banned_on}`\n💬 **Reação**: `{ban_reason}`\n\n"
+    reply_text = f"🚷 **Total banido:** `{banned_usr_count}`\n\n{text}"
     if len(reply_text) > 4096:
         with open("banned-user-list.txt", "w") as f:
             f.write(reply_text)
@@ -153,7 +153,7 @@ BRANCH_ = U_BRANCH
 
 @Client.on_message(command("update") & filters.user(OWNER_ID))
 async def updatebot(_, message: Message):
-    msg = await message.reply_text("**updating bot, please wait for a while...**")
+    msg = await message.reply_text("**Estou atualizando o bot, por favor filho da puta, pode aguardando...**")
     try:
         repo = Repo()
     except GitCommandError:
