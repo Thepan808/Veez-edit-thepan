@@ -21,6 +21,6 @@ async def clear_downloads(_, message: Message):
     if ls_dir:
         for file in os.listdir(downloads):
             os.remove(os.path.join(downloads, file))
-        await message.reply_text("✅ **removed all downloaded files**")
+        await message.reply_text("✅ **Removi todos os download files**")
     else:
-        await message.reply_text("❌ **no files is downloaded**")
+        await message.reply_text("❌ **Nem tem files, como vai remover desgraça?**")
