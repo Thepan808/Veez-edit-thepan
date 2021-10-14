@@ -25,16 +25,16 @@ from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
 @Client.on_message(command(["stream", f"stream@{BOT_USERNAME}"]) & other_filters)
 async def stream(_, message: Message):
     costumer = message.from_user.mention
-    lel = await message.reply_text("🔁 **processing** sound...")
+    lel = await message.reply_text("🔁 **carregando** o vosso som...")
 
     keyboard = InlineKeyboardMarkup(
         [
             [
                 InlineKeyboardButton(
-                    text="✨ ɢʀᴏᴜᴘ", url=f"https://t.me/{GROUP_SUPPORT}"
+                    text="🛂 ɢʀᴏᴜᴘ", url=f"https://t.me/{GROUP_SUPPORT}"
                 ),
                 InlineKeyboardButton(
-                    text="🌻 ᴄʜᴀɴɴᴇʟ", url=f"https://t.me/{UPDATES_CHANNEL}"
+                    text="🛂 ᴄʜᴀɴɴᴇʟ", url=f"https://t.me/{UPDATES_CHANNEL}"
                 ),
             ]
         ]
@@ -45,7 +45,7 @@ async def stream(_, message: Message):
         return await lel.edit("💭 **please reply to a telegram audio file**")
     if round(audio.duration / 60) > DURATION_LIMIT:
         return await lel.edit(
-            f"❌ **music with duration more than** `{DURATION_LIMIT}` **minutes, can't play !**"
+            f"❌ **Erro, música tem uma duração longa demais** `{DURATION_LIMIT}` **minutes, can't play !**"
         )
 
     # tede_ganteng = True
@@ -62,15 +62,15 @@ async def stream(_, message: Message):
         position = await queues.put(message.chat.id, file=file_path)
         await message.reply_photo(
             photo=f"{QUE_IMG}",
-            caption=f"💡 **Track added to queue »** `{position}`\n\n🏷 **Name:** {title[:50]}\n⏱ **Duration:** `{duration}`\n🎧 **Request by:** {costumer}",
+            caption=f"💡 **Música adicionada na fila do Sus »** `{position}`\n\n🏷 **Nome:** {title[:50]}\n⏱ **Duração:** `{duration}`\n🎧 **Pedido por:** {costumer}",
             reply_markup=keyboard,
         )
     else:
         callsmusic.pytgcalls.join_group_call(message.chat.id, file_path)
         await message.reply_photo(
             photo=f"{AUD_IMG}",
-            caption=f"🏷 **Name:** {title[:50]}\n⏱ **Duration:** `{duration}`\n💡 **Status:** `Playing`\n"
-            + f"🎧 **Request by:** {costumer}",
+            caption=f"🕺 **Nome:** {title[:50]}\n⏱ **Duração:** `{duration}`\n💡 **Status:** `Tocando`\n"
+            + f"🎧 **Pedido por:** {costumer}",
             reply_markup=keyboard,
         )
 
