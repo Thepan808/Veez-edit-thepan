@@ -19,7 +19,7 @@ async def addchannel(client, message):
         invitelink = await client.export_chat_invite_link(chid)
     except:
         await message.reply_text(
-            "<b>• **i'm not have permission:**\n\n» ❌ __Add Users__</b>",
+            "<b>• **Eu não tenho permissão:**\n\n» ❌ __Add Users__</b>",
         )
         return
 
@@ -31,21 +31,21 @@ async def addchannel(client, message):
     try:
         await USER.join_chat(invitelink)
         await USER.send_message(
-            message.chat.id, "🤖: i'm joined here for playing music on voice chat"
+            message.chat.id, "🧐: Estou aqui para tocar música no chat de voz, ademir!"
         )
     except UserAlreadyParticipant:
         await message.reply_text(
-            f"<b>✅ userbot already joined chat</b>",
+            f"<b>✅ Userbot já entrou no chat</b>",
         )
     except Exception as e:
         print(e)
         await message.reply_text(
-            f"<b>🛑 Flood Wait Error 🛑 \n\n User {user.first_name} couldn't join your group due to heavy join requests for userbot."
-            "\n\nor manually add assistant to your Group and try again</b>",
+            f"<b>🛑 Erro de Flood 🛑 \n\n User {user.first_name} Não conseguiu entrar no seu grupo devido a muitos pedidos de adesão para o userbot."
+            "\n\Adiciona manualmente o assistente ao seu grupo e tentar novamente</b>",
         )
         return
     await message.reply_text(
-        f"<b>✅ userbot successfully joined chat</b>",
+        f"<b>✅ Userbot entrou no chat com sucesso, 🧐 ademir</b>",
     )
 
 
@@ -55,11 +55,11 @@ async def addchannel(client, message):
 @authorized_users_only
 async def rem(client, message):
     try:
-        await USER.send_message(message.chat.id, "✅ userbot successfully left chat")
+        await USER.send_message(message.chat.id, "✅ Userbot saiu do seu grupo com sucesso.")
         await USER.leave_chat(message.chat.id)
     except:
         await message.reply_text(
-            "<b>user couldn't leave your group, may be floodwaits.\n\nor manually kick me from your group</b>"
+            "<b>O usuário não conseguiu sair do grupo, por conta do floodwait.\n\Manualmente você tem que apenas retirar o userbot, sem banir pra caso tocar novamente em seu grupo</b>"
         )
 
         return
@@ -72,18 +72,18 @@ async def bye(client, message):
 
     left = 0
     failed = 0
-    lol = await message.reply("🔄 **userbot** leaving all chats !")
+    lol = await message.reply("🔄 **Userbot** Saindo de todos os chat !")
     async for dialog in USER.iter_dialogs():
         try:
             await USER.leave_chat(dialog.chat.id)
             left += 1
             await lol.edit(
-                f"Userbot leaving all group...\n\nLeft: {left} chats.\nFailed: {failed} chats."
+                f"Userbot saindo de todos os grupos...\n\nLeft: {left} chats.\nFailed: {failed} chats."
             )
         except:
             failed += 1
             await lol.edit(
-                f"Userbot leaving...\n\nLeft: {left} chats.\nFailed: {failed} chats."
+                f"Userbot saindo...\n\nLeft: {left} chats.\nFailed: {failed} chats."
             )
         await asyncio.sleep(0.7)
     await client.send_message(
