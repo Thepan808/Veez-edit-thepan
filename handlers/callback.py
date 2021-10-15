@@ -214,10 +214,11 @@ async def cbguide(_, query: CallbackQuery):
     )
 
 
+
 @Client.on_callback_query(filters.regex("close"))
 async def close(_, query: CallbackQuery):
     await query.message.delete()
-await query.message.reply_to_message.delete()
+    await query.message.reply_to_message.delete()
 
 @Client.on_callback_query(filters.regex("cbback"))
 @cb_admin_check
