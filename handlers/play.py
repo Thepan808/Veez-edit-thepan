@@ -406,7 +406,9 @@ async def m_cb(b, cb):
         else:
             callsmusic.pytgcalls.pause_stream(chet_id)
 
+
             await cb.message.edit(spn, reply_markup=keyboard)
+
 
     elif type_ == "cls":
         await cb.message.delete()
