@@ -1005,7 +1005,6 @@ async def ytplay(_, message: Message):
                 "😕 **Oh merda, chat tá é desativo**\n\n» Por favor ative o chat de voz"
             )
             return
-        await lel.delete()
         await message.reply_photo(
             photo="final.png",
             caption=f"🧐 **Nome:** [{title[:60]}]({url})\n⏱ **Duração:** `{duration}`\n💡 **Status:** `Tocando`\n"
@@ -1013,4 +1012,4 @@ async def ytplay(_, message: Message):
             reply_markup=keyboard,
         )
         os.remove("final.png")
-        
+        await lel.delete()
