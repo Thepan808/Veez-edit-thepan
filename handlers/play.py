@@ -363,19 +363,19 @@ async def m_cb(b, cb):
         elif type_ == "playlist":
         queue = que.get(cb.message.chat.id)
         if not queue:
-            await cb.message.edit("❌ **no music is currently playing**")
+            await cb.message.edit("❌ **A música nem está tocando**")
         temp = []
         for t in queue:
             temp.append(t)
         now_playing = temp[0][0]
         by = temp[0][1].mention(style="md")
-        msg = "💡 **now playing** on {}".format(cb.message.chat.title)
+        msg = "💡 **Próxima faixa** on {}".format(cb.message.chat.title)
         msg += "\n• " + now_playing
         msg += "\n• Req by " + by
         temp.pop(0)
         if temp:
             msg += "\n\n"
-            msg += "🔖 **Queued Song:**"
+            msg += "🔖 **Som na fila:**"
             for song in temp:
                 name = song[0]
                 usr = song[1].mention(style="md")
@@ -383,7 +383,7 @@ async def m_cb(b, cb):
                 msg += f"\n• Req by {usr}"
         await cb.message.edit(msg, reply_markup=keyboard)
     elif type_ == "resume":
-        psn = "▶ music playback has resumed"
+        psn = "▶ A música já está sendo resumida"
         if (chet_id not in callsmusic.pytgcalls.active_calls) or (
             callsmusic.pytgcalls.active_calls[chet_id] == "playing"
         ):
@@ -394,7 +394,7 @@ async def m_cb(b, cb):
             callsmusic.pytgcalls.resume_stream(chet_id)
             await cb.message.edit(psn, reply_markup=keyboard)
     elif type_ == "puse":
-        spn = "⏸ music playback has paused"
+        spn = "⏸ música está pausada"
         if (chet_id not in callsmusic.pytgcalls.active_calls) or (
             callsmusic.pytgcalls.active_calls[chet_id] == "paused"
         ):
@@ -425,16 +425,16 @@ elif type_ == "cls":
                     InlineKeyboardButton("⏭", "skip"),
                 ],
                 [
-                    InlineKeyboardButton("📖 PLAY-LIST", "playlist"),
+                    InlineKeyboardButton("📖 PLAYLIST 😎", "playlist"),
                 ],
-                [InlineKeyboardButton("🗑 Close", "cls")],
+                [InlineKeyboardButton("🗑 Fechar", "cls")],
             ]
         )
         await cb.message.edit(stats, reply_markup=marr)
 
     elif type_ == "skip":
-        nmq = "❌ no more music in __Queues__\n\n» **userbot leaving** voice chat"
-        mmk = "⏭ you skipped to the next music"
+        nmq = "❌ não tem músicas na __Fila__\n\n» **userbot saindo** voice chat"
+        mmk = "⏭ Você mudou a faixa de música para tocar a próxima música"
         if qeue:
             qeue.pop(0)
         if chet_id not in callsmusic.pytgcalls.active_calls:
@@ -450,7 +450,7 @@ elif type_ == "cls":
                 await cb.message.edit(
                     nmq,
                     reply_markup=InlineKeyboardMarkup(
-                        [[InlineKeyboardButton("🗑 Close", callback_data="close")]]
+                        [[InlineKeyboardButton("🗑 Fechar", callback_data="close")]]
                     ),
                 )
             else:
@@ -467,7 +467,7 @@ elif type_ == "cls":
                 pass
 
             callsmusic.pytgcalls.leave_group_call(chet_id)
-            await cb.message.edit("✅ music playback has ended")
+            await cb.message.edit("✅ A música acaba-se de ser encerrada")
         else:
             await cb.answer(
                 "assistant is not connected to voice chat !", show_alert=True
@@ -480,7 +480,7 @@ async def play(_, message: Message):
     global useer
     if message.chat.id in DISABLED_GROUPS:
         return
-    lel = await message.reply("🔎 **searching...**")
+    lel = await message.reply("🔎 **Procurando ademir, aguarde...**")
     administrators = await get_administrators(message.chat)
     chid = message.chat.id
     try:
@@ -503,31 +503,31 @@ async def play(_, message: Message):
                     invitelink = await _.export_chat_invite_link(chid)
                 except:
                     await lel.edit(
-                        "💡 **To use me, I need to be an Administrator** with the permissions:\n\n» ❌ __Delete messages__\n» ❌ __Ban users__\n» ❌ __Add users__\n» ❌ __Manage voice chat__\n\n**Then type /reload**",
+                        "💡 **Para me usar, Ponhe admin nas seguintes etapas** Permissões:\n\n» ❌ __Deletar Mensagens__\n» ❌ __Opção de banir__\n» ❌ __Adicionar user(membro)__\n» ❌ __Gerenciar o chat de voz/vídeo__\n\n**Depois aperte /reload**",
                     )
                     return
                 try:
                     await USER.join_chat(invitelink)
                     await USER.send_message(
                         message.chat.id,
-                        "🤖: **i'm joined to this group for playing music on voice chat**",
+                        "🤖: **Opaaa ademir acabei de entrar no grupo para tocar no chat de voz**",
                     )
                     await lel.edit(
-                        f"✅ **userbot successfully joined chat**",
+                        f"✅ **Userbot entrou no chat com sucesso**",
                     )
                 except UserAlreadyParticipant:
                     pass
                 except Exception:
                     # print(e)
                     await lel.edit(
-                        f"🔴 **Flood Wait Error** 🔴 \n\n**userbot can't join this group due to many join requests for userbot.**"
+                        f"🔴 **Flood Wait (Floods) Error** 🔴 \n\n**Userbot não foi possível entrar no chat, por conta de muitos pedidos dos usuários para entrar na call.**"
                         f"\n\n**or add @{ASSISTANT_NAME} to this group manually then try again.**",
                     )
     try:
         await USER.get_chat(chid)
     except:
         await lel.edit(
-            f"» **userbot was banned in this group !**\n\n**unban @{ASSISTANT_NAME} and added again to this group manually."
+            f"» **Cara o userbot está banido no grupo porra !**\n\n**Desbani o @{ASSISTANT_NAME} e adiciona de novo ao grupo."
         )
         return
     text_links = None
@@ -586,7 +586,7 @@ async def play(_, message: Message):
         )
     elif urls:
         query = toxt
-        await lel.edit("🔎 **searching...**")
+        await lel.edit("🔎 **Procurando, ademir aguarde...**")
         ydl_opts = {"format": "bestaudio[ext=m4a]"}
         try:
             results = YoutubeSearch(query, max_results=1).to_dict()
@@ -604,7 +604,7 @@ async def play(_, message: Message):
             results[0]["views"]
         except Exception as e:
             await lel.edit(
-                "😕 **couldn't find song you requested**\n\n» **please provide the correct song name or include the artist's name as well**"
+                "😕 **Noffa fela da pota nem achei essa porra dessa música menor, tenta novamente aí**\n\n» **Caso eu não encontrar, use a música em mp3 e toque em /stream, ou ponhe essa porra direito seu analfabeto**"
             )
             print(str(e))
             return
