@@ -360,7 +360,7 @@ async def m_cb(b, cb):
                 updated_stats(m_chat, qeue), reply_markup=r_ply("pause")
             )
 
-    elif type_ == "playlist":
+        elif type_ == "playlist":
         queue = que.get(cb.message.chat.id)
         if not queue:
             await cb.message.edit("❌ **no music is currently playing**")
@@ -403,11 +403,15 @@ async def m_cb(b, cb):
             )
         else:
             callsmusic.pytgcalls.pause_stream(chet_id)
+           
+
             await cb.message.edit(spn, reply_markup=keyboard)
 
-    elif type_ == "cls":
-        await cb.message.delete()
-        await cb.message.reply_to_message.delete()
+   
+ 
+elif type_ == "cls":
+      await cb.message.delete()
+      await cb.message.reply_to_message.delete()
 
     elif type_ == "menu":
         stats = updated_stats(cb.message.chat, qeue)
