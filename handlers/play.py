@@ -407,9 +407,7 @@ async def m_cb(b, cb):
 
             await cb.message.edit(spn, reply_markup=keyboard)
 
-   
- 
-elif type_ == "cls":
+   elif type_ == "cls":
       await cb.message.delete()
       await cb.message.reply_to_message.delete()
 
