@@ -47,7 +47,7 @@ def cb_admin_check(func: Callable) -> Callable:
         if cb.from_user.id in admemes:
             return await func(client, cb)
         else:
-            await cb.answer("💡 only admin can tap this button !", show_alert=True)
+            await cb.answer("💡 Apenas o administrador pode tocar neste botão !", show_alert=True)
             return
 
     return decorator
@@ -86,11 +86,12 @@ def changeImageSize(maxWidth, maxHeight, image):
 
 
 async def generate_cover(title, thumbnail, ctitle):
-    async with aiohttp.ClientSession() as session, session.get(thumbnail) as resp:
-          if resp.status == 200:
-              f = await aiofiles.open("background.png", mode="wb")
-              await f.write(await resp.read())
-              await f.close()
+    async with aiohttp.ClientSession() as session:
+        async with session.get(thumbnail) as resp:
+            if resp.status == 200:
+                f = await aiofiles.open("background.png", mode="wb")
+                await f.write(await resp.read())
+                await f.close()
     image1 = Image.open("./background.png")
     image2 = Image.open("etc/foreground.png")
     image3 = changeImageSize(1280, 720, image1)
@@ -100,10 +101,10 @@ async def generate_cover(title, thumbnail, ctitle):
     Image.alpha_composite(image5, image6).save("temp.png")
     img = Image.open("temp.png")
     draw = ImageDraw.Draw(img)
-    font = ImageFont.truetype("etc/typold.otf", 55)
+    font = ImageFont.truetype("etc/Roboto-Medium.ttf", 55)
     font2 = ImageFont.truetype("etc/finalfont.ttf", 80)
-    draw.text((25, 522), f"Playing on {ctitle[:8]}", (0, 0, 0), font=font)
-    draw.text((25, 605), f"{title[:15]}...", (0, 0, 0), font=font2)
+    draw.text((20, 528), f"Playing on {ctitle[:10]}", (0, 0, 0), font=font)
+    draw.text((20, 610), f"{title[:20]}...", (0, 0, 0), font=font2)
     img.save("final.png")
     os.remove("temp.png")
     os.remove("background.png")
@@ -117,9 +118,9 @@ async def playlist(client, message):
     keyboard = InlineKeyboardMarkup(
         [
             [
-                InlineKeyboardButton("• Gʀᴏᴜᴘ", url=f"https://t.me/{GROUP_SUPPORT}"),
+                InlineKeyboardButton("• 𝐆𝐫𝐮𝐩𝐨", url=f"https://t.me/{GROUP_SUPPORT}"),
                 InlineKeyboardButton(
-                    "• Cʜᴀɴɴᴇʟ", url=f"https://t.me/{UPDATES_CHANNEL}"
+                    "• 𝐂𝐚𝐧𝐚𝐥", url=f"https://t.me/{UPDATES_CHANNEL}"
                 ),
             ]
         ]
@@ -130,24 +131,24 @@ async def playlist(client, message):
         return
     queue = que.get(message.chat.id)
     if not queue:
-        await message.reply_text("❌ **no music is currently playing**")
+        await message.reply_text("❌ **Ademir/Membro... Nenhuma música, tá tocando nesse exato momento ué**")
     temp = []
     for t in queue:
         temp.append(t)
     now_playing = temp[0][0]
     by = temp[0][1].mention(style="md")
-    msg = "💡 **now playing** on {}".format(message.chat.title)
+    msg = "🎵 **Agora estará sendo reproduzido** on {}".format(message.chat.title)
     msg += "\n\n• " + now_playing
     msg += "\n• Req By " + by
     temp.pop(0)
     if temp:
         msg += "\n\n"
-        msg += "🔖 **Queued Song:**"
+        msg += "🛂 **Música na fila, jovem**"
         for song in temp:
             name = song[0]
             usr = song[1].mention(style="md")
             msg += f"\n\n• {name}"
-            msg += f"\n• Req by {usr}"
+            msg += f"\n• Req by {usr}\n"
     await message.reply_text(msg, reply_markup=keyboard)
 
 
@@ -157,10 +158,10 @@ def updated_stats(chat, queue, vol=100):
         stats = "⚙ settings for **{}**".format(chat.title)
         if len(que) > 0:
             stats += "\n\n"
-            stats += "• volume: `{}%`\n".format(vol)
-            stats += "• song played: `{}`\n".format(len(que))
-            stats += "• now playing: **{}**\n".format(queue[0][0])
-            stats += "• request by: {}".format(queue[0][1].mention(style="md"))
+            stats += "•🎚️ volume: {}%\n".format(vol)
+            stats += "•🔊 Som tocado: `{}`\n".format(len(que))
+            stats += "•🕺 Agora reproduzindo: **{}**\n".format(queue[0][0])
+            stats += "• Música reproduzida pelo: {}".format(queue[0][1].mention(style="md"))
     else:
         stats = None
     return stats
@@ -174,15 +175,15 @@ def r_ply(type_):
     mar = InlineKeyboardMarkup(
         [
             [
-                InlineKeyboardButton("⏹", "leave"),
-                InlineKeyboardButton("⏸", "puse"),
-                InlineKeyboardButton("▶️", "resume"),
-                InlineKeyboardButton("⏭", "skip"),
+                InlineKeyboardButton("⏹", "parar de vez"),
+                InlineKeyboardButton("⏸", "pause"),
+                InlineKeyboardButton("▶️", "resumir"),
+                InlineKeyboardButton("⏭", "pular"),
             ],
             [
-                InlineKeyboardButton("📖 PLAY-LIST", "playlist"),
+                InlineKeyboardButton("🗃️ PLAYLIST", "playlist"),
             ],
-            [InlineKeyboardButton("🗑 Close", "cls")],
+            [InlineKeyboardButton("🗑 Apagar", "cls")],
         ]
     )
     return mar
@@ -207,12 +208,12 @@ async def settings(client, message):
             await message.reply(stats, reply_markup=r_ply("play"))
     else:
         await message.reply(
-            "😕 **voice chat not found**\n\n» please turn on the voice chat first"
+            "😳 **Chat de voz não encontrado pow**\n\n» Por favor, ative o chat de voz primeiro"
         )
 
 
 @Client.on_message(
-    command(["music", f"music@{BOT_USERNAME}"])
+    command(["musicplayer", f"musicplayer@{BOT_USERNAME}"])
     & ~filters.edited
     & ~filters.bot
     & ~filters.private
@@ -226,30 +227,30 @@ async def music_onoff(_, message):
         return
     if len(message.command) != 2:
         await message.reply_text(
-            "**• usage:**\n\n `/music on` & `/music off`"
+            "**i'm only know** `/musicplayer on` **and** `/musicplayer off`"
         )
         return
     status = message.text.split(None, 1)[1]
     message.chat.id
-    if status in ("ON", "on", "On"):
+    if status == "ON" or status == "on" or status == "On":
         lel = await message.reply("`processing...`")
         if not message.chat.id in DISABLED_GROUPS:
-            await lel.edit("» **music player already turned on.**")
+            await lel.edit("» **music player alternado para ativa.**")
             return
         DISABLED_GROUPS.remove(message.chat.id)
-        await lel.edit(f"✅ **music player turned on**\n\n💬 `{message.chat.id}`")
+        await lel.edit(f"✅ **music player está ativo**\n\n💬 `{message.chat.id}`")
 
-    elif status in ("OFF", "off", "Off"):
+    elif status == "OFF" or status == "off" or status == "Off":
         lel = await message.reply("`processing...`")
 
         if message.chat.id in DISABLED_GROUPS:
-            await lel.edit("» **music player already turned off.**")
+            await lel.edit("» **music player está alterado para desativar.**")
             return
         DISABLED_GROUPS.append(message.chat.id)
-        await lel.edit(f"✅ **music player turned off**\n\n💬 `{message.chat.id}`")
+        await lel.edit(f"✅ **music player está off pae**\n\n💬 `{message.chat.id}`")
     else:
         await message.reply_text(
-            "**• usage:**\n\n `/music on` & `/music off`"
+            "**i'm only know** `/musicplayer on` **and** `/musicplayer off`"
         )
 
 
@@ -259,12 +260,12 @@ async def p_cb(b, cb):
     keyboard = InlineKeyboardMarkup(
         [
             [
-                InlineKeyboardButton("• Gʀᴏᴜᴘ", url=f"https://t.me/{GROUP_SUPPORT}"),
+                InlineKeyboardButton("• 𝐆𝐫𝐮𝐩𝐨", url=f"https://t.me/{GROUP_SUPPORT}"),
                 InlineKeyboardButton(
-                    "• Cʜᴀɴɴᴇʟ", url=f"https://t.me/{UPDATES_CHANNEL}"
+                    "• 𝐂𝐚𝐧𝐚𝐥", url=f"https://t.me/{UPDATES_CHANNEL}"
                 ),
             ],
-            [InlineKeyboardButton("🔙 Go Back", callback_data="menu")],
+            [InlineKeyboardButton("🔙 Para voltar", callback_data="menu")],
         ]
     )
 
@@ -277,24 +278,24 @@ async def p_cb(b, cb):
     if type_ == "playlist":
         queue = que.get(cb.message.chat.id)
         if not queue:
-            await cb.message.edit("❌ **no music is currently playing**")
+            await cb.message.edit("❌ **Música não está corretamente tocando**")
         temp = []
         for t in queue:
             temp.append(t)
         now_playing = temp[0][0]
         by = temp[0][1].mention(style="md")
-        msg = "💡 **now playing** on {}".format(cb.message.chat.title)
+        msg = "🧐 **Será reproduzida logo** on {}".format(cb.message.chat.title)
         msg += "\n\n• " + now_playing
         msg += "\n• Req by " + by
         temp.pop(0)
         if temp:
             msg += "\n\n"
-            msg += "🔖 **Queued Song:**"
+            msg += "🔖 **Fila da música**"
             for song in temp:
                 name = song[0]
                 usr = song[1].mention(style="md")
                 msg += f"\n\n• {name}"
-                msg += f"\n• Req by {usr}"
+                msg += f"\n• Req by {usr}\n"
         await cb.message.edit(msg, reply_markup=keyboard)
 
 
@@ -307,12 +308,12 @@ async def m_cb(b, cb):
     keyboard = InlineKeyboardMarkup(
         [
             [
-                InlineKeyboardButton("• Gʀᴏᴜᴘ", url=f"https://t.me/{GROUP_SUPPORT}"),
+                InlineKeyboardButton("• 𝐆𝐫𝐮𝐩𝐨", url=f"https://t.me/{GROUP_SUPPORT}"),
                 InlineKeyboardButton(
-                    "• Cʜᴀɴɴᴇʟ", url=f"https://t.me/{UPDATES_CHANNEL}"
+                    "• 𝐂𝐚𝐧𝐚𝐥", url=f"https://t.me/{UPDATES_CHANNEL}"
                 ),
             ],
-            [InlineKeyboardButton("🔙 Go Back", callback_data="menu")],
+            [InlineKeyboardButton("🔙 Para voltar", callback_data="menu")],
         ]
     )
 
