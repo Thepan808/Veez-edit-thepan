@@ -375,14 +375,13 @@ async def m_cb(b, cb):
         temp.pop(0)
         if temp:
             msg += "\n\n"
-            msg += "🔖 **Queued Song**"
+            msg += "🔖 **Queued Song:**"
             for song in temp:
                 name = song[0]
                 usr = song[1].mention(style="md")
                 msg += f"\n\n• {name}"
-                msg += f"\n• Req by {usr}\n"
+                msg += f"\n• Req by {usr}"
         await cb.message.edit(msg, reply_markup=keyboard)
-
     elif type_ == "resume":
         psn = "▶ music playback has resumed"
         if (chet_id not in callsmusic.pytgcalls.active_calls) or (
@@ -394,7 +393,6 @@ async def m_cb(b, cb):
         else:
             callsmusic.pytgcalls.resume_stream(chet_id)
             await cb.message.edit(psn, reply_markup=keyboard)
-
     elif type_ == "puse":
         spn = "⏸ music playback has paused"
         if (chet_id not in callsmusic.pytgcalls.active_calls) or (
@@ -405,10 +403,7 @@ async def m_cb(b, cb):
             )
         else:
             callsmusic.pytgcalls.pause_stream(chet_id)
-
-
             await cb.message.edit(spn, reply_markup=keyboard)
-
 
     elif type_ == "cls":
         await cb.message.delete()
