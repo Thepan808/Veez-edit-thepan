@@ -360,7 +360,7 @@ async def m_cb(b, cb):
                 updated_stats(m_chat, qeue), reply_markup=r_ply("pause")
             )
 
-        elif type_ == "playlist":
+    elif type_ == "playlist":
         queue = que.get(cb.message.chat.id)
         if not queue:
             await cb.message.edit("❌ **A música nem está tocando**")
