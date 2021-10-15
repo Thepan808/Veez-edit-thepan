@@ -360,22 +360,384 @@ async def m_cb(b, cb):
                 updated_stats(m_chat, qeue), reply_markup=r_ply("pause")
             )
 
-    elif type_ == "playlist":
+     
+import os
+from asyncio.queues import QueueEmpty
+from os import path
+from typing import Callable
+
+import aiofiles
+import aiohttp
+import converter
+import ffmpeg
+import requests
+from cache.admins import admins as a
+from callsmusic import callsmusic
+from callsmusic.callsmusic import client as USER
+from callsmusic.queues import queues
+from config import (
+    ASSISTANT_NAME,
+    BOT_NAME,
+    BOT_USERNAME,
+    DURATION_LIMIT,
+    GROUP_SUPPORT,
+    THUMB_IMG,
+    UPDATES_CHANNEL,
+    que,
+)
+from downloaders import youtube
+from helpers.admins import get_administrators
+from helpers.channelmusic import get_chat_id
+from helpers.chattitle import CHAT_TITLE
+from helpers.decorators import authorized_users_only
+from helpers.filters import command, other_filters
+from helpers.gets import get_file_name
+from PIL import Image, ImageDraw, ImageFont
+from pyrogram import Client, filters
+from pyrogram.errors import UserAlreadyParticipant
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
+from youtube_search import YoutubeSearch
+
+aiohttpsession = aiohttp.ClientSession()
+chat_id = None
+useer = "NaN"
+DISABLED_GROUPS = []
+
+
+def cb_admin_check(func: Callable) -> Callable:
+    async def decorator(client, cb):
+        admemes = a.get(cb.message.chat.id)
+        if cb.from_user.id in admemes:
+            return await func(client, cb)
+        else:
+            await cb.answer("💡 only admin can tap this button !", show_alert=True)
+            return
+
+    return decorator
+
+
+def transcode(filename):
+    ffmpeg.input(filename).output(
+        "input.raw", format="s16le", acodec="pcm_s16le", ac=2, ar="48k"
+    ).overwrite_output().run()
+    os.remove(filename)
+
+
+# Convert seconds to mm:ss
+def convert_seconds(seconds):
+    seconds = seconds % (24 * 3600)
+    seconds %= 3600
+    minutes = seconds // 60
+    seconds %= 60
+    return "%02d:%02d" % (minutes, seconds)
+
+
+# Convert hh:mm:ss to seconds
+def time_to_seconds(time):
+    stringt = str(time)
+    return sum(int(x) * 60 ** i for i, x in enumerate(reversed(stringt.split(":"))))
+
+
+# Change image size
+def changeImageSize(maxWidth, maxHeight, image):
+    widthRatio = maxWidth / image.size[0]
+    heightRatio = maxHeight / image.size[1]
+    newWidth = int(widthRatio * image.size[0])
+    newHeight = int(heightRatio * image.size[1])
+    newImage = image.resize((newWidth, newHeight))
+    return newImage
+
+
+async def generate_cover(title, thumbnail, ctitle):
+    async with aiohttp.ClientSession() as session, session.get(thumbnail) as resp:
+          if resp.status == 200:
+              f = await aiofiles.open("background.png", mode="wb")
+              await f.write(await resp.read())
+              await f.close()
+    image1 = Image.open("./background.png")
+    image2 = Image.open("etc/foreground.png")
+    image3 = changeImageSize(1280, 720, image1)
+    image4 = changeImageSize(1280, 720, image2)
+    image5 = image3.convert("RGBA")
+    image6 = image4.convert("RGBA")
+    Image.alpha_composite(image5, image6).save("temp.png")
+    img = Image.open("temp.png")
+    draw = ImageDraw.Draw(img)
+    font = ImageFont.truetype("etc/typold.otf", 55)
+    font2 = ImageFont.truetype("etc/finalfont.ttf", 80)
+    draw.text((25, 522), f"Playing on {ctitle[:8]}", (0, 0, 0), font=font)
+    draw.text((25, 605), f"{title[:15]}...", (0, 0, 0), font=font2)
+    img.save("final.png")
+    os.remove("temp.png")
+    os.remove("background.png")
+
+
+@Client.on_message(
+    command(["playlist", f"playlist@{BOT_USERNAME}"]) & filters.group & ~filters.edited
+)
+async def playlist(client, message):
+
+    keyboard = InlineKeyboardMarkup(
+        [
+            [
+                InlineKeyboardButton("• Gʀᴏᴜᴘ", url=f"https://t.me/{GROUP_SUPPORT}"),
+                InlineKeyboardButton(
+                    "• Cʜᴀɴɴᴇʟ", url=f"https://t.me/{UPDATES_CHANNEL}"
+                ),
+            ]
+        ]
+    )
+
+    global que
+    if message.chat.id in DISABLED_GROUPS:
+        return
+    queue = que.get(message.chat.id)
+    if not queue:
+        await message.reply_text("❌ **no music is currently playing**")
+    temp = []
+    for t in queue:
+        temp.append(t)
+    now_playing = temp[0][0]
+    by = temp[0][1].mention(style="md")
+    msg = "💡 **now playing** on {}".format(message.chat.title)
+    msg += "\n\n• " + now_playing
+    msg += "\n• Req By " + by
+    temp.pop(0)
+    if temp:
+        msg += "\n\n"
+        msg += "🔖 **Queued Song:**"
+        for song in temp:
+            name = song[0]
+            usr = song[1].mention(style="md")
+            msg += f"\n\n• {name}"
+            msg += f"\n• Req by {usr}"
+    await message.reply_text(msg, reply_markup=keyboard)
+
+
+# ============================= Settings =========================================
+def updated_stats(chat, queue, vol=100):
+    if chat.id in callsmusic.pytgcalls.active_calls:
+        stats = "⚙ settings for **{}**".format(chat.title)
+        if len(que) > 0:
+            stats += "\n\n"
+            stats += "• volume: `{}%`\n".format(vol)
+            stats += "• song played: `{}`\n".format(len(que))
+            stats += "• now playing: **{}**\n".format(queue[0][0])
+            stats += "• request by: {}".format(queue[0][1].mention(style="md"))
+    else:
+        stats = None
+    return stats
+
+
+def r_ply(type_):
+    if type_ == "play":
+        pass
+    else:
+        pass
+    mar = InlineKeyboardMarkup(
+        [
+            [
+                InlineKeyboardButton("⏹", "leave"),
+                InlineKeyboardButton("⏸", "puse"),
+                InlineKeyboardButton("▶️", "resume"),
+                InlineKeyboardButton("⏭", "skip"),
+            ],
+            [
+                InlineKeyboardButton("📖 PLAY-LIST", "playlist"),
+            ],
+            [InlineKeyboardButton("🗑 Close", "cls")],
+        ]
+    )
+    return mar
+
+
+@Client.on_message(
+    command(["player", f"player@{BOT_USERNAME}"]) & filters.group & ~filters.edited
+)
+@authorized_users_only
+async def settings(client, message):
+    global que
+    playing = None
+    if message.chat.id in callsmusic.pytgcalls.active_calls:
+        playing = True
+    queue = que.get(message.chat.id)
+    stats = updated_stats(message.chat, queue)
+    if stats:
+        if playing:
+            await message.reply(stats, reply_markup=r_ply("pause"))
+
+        else:
+            await message.reply(stats, reply_markup=r_ply("play"))
+    else:
+        await message.reply(
+            "😕 **voice chat not found**\n\n» please turn on the voice chat first"
+        )
+
+
+@Client.on_message(
+    command(["music", f"music@{BOT_USERNAME}"])
+    & ~filters.edited
+    & ~filters.bot
+    & ~filters.private
+)
+@authorized_users_only
+async def music_onoff(_, message):
+    global DISABLED_GROUPS
+    try:
+        message.from_user.id
+    except:
+        return
+    if len(message.command) != 2:
+        await message.reply_text(
+            "**• usage:**\n\n `/music on` & `/music off`"
+        )
+        return
+    status = message.text.split(None, 1)[1]
+    message.chat.id
+    if status in ("ON", "on", "On"):
+        lel = await message.reply("`processing...`")
+        if not message.chat.id in DISABLED_GROUPS:
+            await lel.edit("» **music player already turned on.**")
+            return
+        DISABLED_GROUPS.remove(message.chat.id)
+        await lel.edit(f"✅ **music player turned on**\n\n💬 `{message.chat.id}`")
+
+    elif status in ("OFF", "off", "Off"):
+        lel = await message.reply("`processing...`")
+
+        if message.chat.id in DISABLED_GROUPS:
+            await lel.edit("» **music player already turned off.**")
+            return
+        DISABLED_GROUPS.append(message.chat.id)
+        await lel.edit(f"✅ **music player turned off**\n\n💬 `{message.chat.id}`")
+    else:
+        await message.reply_text(
+            "**• usage:**\n\n `/music on` & `/music off`"
+        )
+
+
+@Client.on_callback_query(filters.regex(pattern=r"^(playlist)$"))
+async def p_cb(b, cb):
+
+    keyboard = InlineKeyboardMarkup(
+        [
+            [
+                InlineKeyboardButton("• Gʀᴏᴜᴘ", url=f"https://t.me/{GROUP_SUPPORT}"),
+                InlineKeyboardButton(
+                    "• Cʜᴀɴɴᴇʟ", url=f"https://t.me/{UPDATES_CHANNEL}"
+                ),
+            ],
+            [InlineKeyboardButton("🔙 Go Back", callback_data="menu")],
+        ]
+    )
+
+    global que
+    que.get(cb.message.chat.id)
+    type_ = cb.matches[0].group(1)
+    cb.message.chat.id
+    cb.message.chat
+    cb.message.reply_markup.inline_keyboard[1][0].callback_data
+    if type_ == "playlist":
         queue = que.get(cb.message.chat.id)
         if not queue:
-            await cb.message.edit("❌ **A música nem está tocando**")
+            await cb.message.edit("❌ **no music is currently playing**")
         temp = []
         for t in queue:
             temp.append(t)
         now_playing = temp[0][0]
         by = temp[0][1].mention(style="md")
-        msg = "💡 **Próxima faixa** on {}".format(cb.message.chat.title)
+        msg = "💡 **now playing** on {}".format(cb.message.chat.title)
+        msg += "\n\n• " + now_playing
+        msg += "\n• Req by " + by
+        temp.pop(0)
+        if temp:
+            msg += "\n\n"
+            msg += "🔖 **Queued Song:**"
+            for song in temp:
+                name = song[0]
+                usr = song[1].mention(style="md")
+                msg += f"\n\n• {name}"
+                msg += f"\n• Req by {usr}"
+        await cb.message.edit(msg, reply_markup=keyboard)
+
+
+@Client.on_callback_query(
+    filters.regex(pattern=r"^(play|pause|skip|leave|puse|resume|menu|cls)$")
+)
+@cb_admin_check
+async def m_cb(b, cb):
+
+    keyboard = InlineKeyboardMarkup(
+        [
+            [
+                InlineKeyboardButton("• Gʀᴏᴜᴘ", url=f"https://t.me/{GROUP_SUPPORT}"),
+                InlineKeyboardButton(
+                    "• Cʜᴀɴɴᴇʟ", url=f"https://t.me/{UPDATES_CHANNEL}"
+                ),
+            ],
+            [InlineKeyboardButton("🔙 Go Back", callback_data="menu")],
+        ]
+    )
+
+    global que
+    if (
+        cb.message.chat.title.startswith("Channel Music: ")
+        and chat.title[14:].isnumeric()
+    ):
+        chet_id = int(chat.title[13:])
+    else:
+        chet_id = cb.message.chat.id
+    qeue = que.get(chet_id)
+    type_ = cb.matches[0].group(1)
+    cb.message.chat.id
+    m_chat = cb.message.chat
+
+    the_data = cb.message.reply_markup.inline_keyboard[1][0].callback_data
+    if type_ == "pause":
+        if (chet_id not in callsmusic.pytgcalls.active_calls) or (
+            callsmusic.pytgcalls.active_calls[chet_id] == "paused"
+        ):
+            await cb.answer(
+                "assistant is not connected to voice chat !", show_alert=True
+            )
+        else:
+            callsmusic.pytgcalls.pause_stream(chet_id)
+
+            await cb.answer("music paused")
+            await cb.message.edit(
+                updated_stats(m_chat, qeue), reply_markup=r_ply("play")
+            )
+
+    elif type_ == "play":
+        if (chet_id not in callsmusic.pytgcalls.active_calls) or (
+            callsmusic.pytgcalls.active_calls[chet_id] == "playing"
+        ):
+            await cb.answer(
+                "assistant is not connected to voice chat !", show_alert=True
+            )
+        else:
+            callsmusic.pytgcalls.resume_stream(chet_id)
+            await cb.answer("music resumed")
+            await cb.message.edit(
+                updated_stats(m_chat, qeue), reply_markup=r_ply("pause")
+            )
+
+    elif type_ == "playlist":
+        queue = que.get(cb.message.chat.id)
+        if not queue:
+            await cb.message.edit("❌ **no music is currently playing**")
+        temp = []
+        for t in queue:
+            temp.append(t)
+        now_playing = temp[0][0]
+        by = temp[0][1].mention(style="md")
+        msg = "💡 **now playing** on {}".format(cb.message.chat.title)
         msg += "\n• " + now_playing
         msg += "\n• Req by " + by
         temp.pop(0)
         if temp:
             msg += "\n\n"
-            msg += "🔖 **Som na fila:**"
+            msg += "🔖 **Queued Song:**"
             for song in temp:
                 name = song[0]
                 usr = song[1].mention(style="md")
