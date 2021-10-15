@@ -407,9 +407,8 @@ async def m_cb(b, cb):
 
             await cb.message.edit(spn, reply_markup=keyboard)
 
-   elif type_ == "cls":
-      await cb.message.delete()
-      await cb.message.reply_to_message.delete()
+elif type_ == "cls":
+        await cb.message.delete()
 
     elif type_ == "menu":
         stats = updated_stats(cb.message.chat, qeue)
