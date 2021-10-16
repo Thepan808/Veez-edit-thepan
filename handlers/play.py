@@ -422,7 +422,7 @@ async def m_cb(b, cb):
                     InlineKeyboardButton("⏭", "skip"),
                 ],
                 [
-                    InlineKeyboardButton("📖 PLAY-LIST", "playlist"),
+                    InlineKeyboardButton("♦ PLAYLIST ♦", "playlist"),
                 ],
                 [InlineKeyboardButton("🗑 Close", "cls")],
             ]
