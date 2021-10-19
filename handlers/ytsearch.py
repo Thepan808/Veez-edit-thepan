@@ -25,7 +25,7 @@ async def ytsearch(_, message: Message):
         [
             [
                 InlineKeyboardButton(
-                    "🗑 Fechar", callback_data="close",
+                    "🗑 Close", callback_data="close",
                 )
             ]
         ]
@@ -36,12 +36,12 @@ async def ytsearch(_, message: Message):
             await message.reply_text("/search **needs an argument !**")
             return
         query = message.text.split(None, 1)[1]
-        m = await message.reply_text("🔎 **Procurando...**")
+        m = await message.reply_text("🔎 **Procurando ademir...**")
         results = YoutubeSearch(query, max_results=5).to_dict()
         i = 0
         text = ""
         while i < 5:
-            text += f"🧐 **Nome:** __{results[i]['title']}__\n"
+            text += f"♦️ **Nome:** __{results[i]['title']}__\n"
             text += f"⏱ **Duração:** `{results[i]['duration']}`\n"
             text += f"👀 **Visualizações:** `{results[i]['views']}`\n"
             text += f"📣 **Canal:** {results[i]['channel']}\n"
