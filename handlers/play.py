@@ -942,7 +942,7 @@ async def ytplay(_, message: Message):
 
     except Exception as e:
         await lel.edit(
-            "😕 **não conseguir encontrar música que você pediu**\n\n» **Mermão, tem demência é? Coloque sapoha desse nome corretanente aí bro**"
+            "😒 **não conseguir encontrar a porra dessa música que você pediu**\n\n» **Mermão, tem demência é? Coloque sapoha desse nome corretanente aí bro**"
         )
         print(str(e))
         return
