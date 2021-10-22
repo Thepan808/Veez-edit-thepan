@@ -330,7 +330,7 @@ async def m_cb(b, cb):
     cb.message.chat.id
     m_chat = cb.message.chat
 
-    the_data = cb.message.reply_markup.inline_keyboard[1][0].callback_data
+    cb.message.reply_markup.inline_keyboard[1][0].callback_data
     if type_ == "pause":
         if (chet_id not in callsmusic.pytgcalls.active_calls) or (
             callsmusic.pytgcalls.active_calls[chet_id] == "paused"
@@ -672,7 +672,9 @@ async def play(_, message: Message):
                 ]
             )
             await message.reply_photo(
-                photo=f"{THUMB_IMG}", caption=toxxt, reply_markup=keyboard
+                photo=f"{THUMB_IMG}",
+                caption=toxxt,
+                reply_markup=keyboard,
             )
 
             await lel.delete()
@@ -850,7 +852,7 @@ async def lol_cb(b, cb):
         qeue.append(appendable)
         callsmusic.pytgcalls.join_group_call(chat_id, file_path)
         await cb.message.delete()
-        await b.send_photo(
+        await message.reply_photo(
             chat_id,
             photo="final.png",
             caption=f"♦️ **Nome:** [{title[:65]}]({url})\n⏱ **Duração:** `{duration}`\n⚙️ **Status:** `Tocando`\n"
