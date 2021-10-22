@@ -447,7 +447,7 @@ async def cmdsyntax(_, query: CallbackQuery):
         f"""**Command Syntax** to play music on **Voice Chat:**
 • /play (query) - para tocar música via youtube
 • /ytp (query) - para tocar música diretamente via youtube
-⚡ __Powered by {BOT_NAME}""",
+⚡ __Carregado pelo {BOT_NAME}__""",
         reply_markup=InlineKeyboardMarkup(
             [[InlineKeyboardButton("🔙 Para voltar", callback_data="cmdhome")]]
         ),
