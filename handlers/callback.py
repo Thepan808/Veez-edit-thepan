@@ -421,3 +421,34 @@ async def cbmoon(_, query: CallbackQuery):
             [[InlineKeyboardButton("🔙 Voltar", callback_data="cbcmds")]]
         ),
     )
+
+
+@Client.on_callback_query(filters.regex("cmdhome"))
+async def cmdhome(_, query: CallbackQuery):
+
+    bttn = InlineKeyboardMarkup(
+        [
+            [
+                InlineKeyboardButton("Command Syntax", callback_data="cmdsyntax")
+            ],[
+                InlineKeyboardButton("🗑 Fechar", callback_data="close")
+            ]
+        ]
+    )
+
+    nofound = "😕 **não consigo encontrar a vossa música que você pediu**\n\n» **por favor, forneça o nome correto da música ou inclua o nome do artista também**"
+
+    await query.edit_message_text(nofound, reply_markup=bttn)
+
+
+@Client.on_callback_query(filters.regex("cmdsyntax"))
+async def cmdsyntax(_, query: CallbackQuery):
+    await query.edit_message_text(
+        f"""**Command Syntax** to play music on **Voice Chat:**
+• /play (query) - para tocar música via youtube
+• /ytp (query) - para tocar música diretamente via youtube
+⚡ __Powered by {BOT_NAME}""",
+        reply_markup=InlineKeyboardMarkup(
+            [[InlineKeyboardButton("🔙 Para voltar", callback_data="cmdhome")]]
+        ),
+    )
