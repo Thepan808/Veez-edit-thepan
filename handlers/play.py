@@ -772,9 +772,9 @@ async def lol_cb(b, cb):
         return
     useer_id = int(useer_id)
     if cb.from_user.id != useer_id:
-        await cb.answer("💡 sorry, this is not for you !", show_alert=True)
+        await cb.answer("😒 Mal aí ademir, isso aqui não é para você !", show_alert=True)
         return
-    # await cb.message.edit("🔁 **processando...**")
+    await cb.answer("🔄 Baixando o som ademir, aguarda aí beleza filho duma puta...", show_alert=True)
     x = int(x)
     try:
         cb.message.reply_to_message.from_user.first_name
