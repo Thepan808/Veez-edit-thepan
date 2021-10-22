@@ -603,7 +603,7 @@ async def play(_, message: Message):
             results[0]["views"]
         except Exception as e:
             await lel.edit(
-                "😕 **couldn't find song you requested**\n\n» **please provide the correct song name or include the artist's name as well**"
+                "😕 **não consigo encontrar música que você pediu ademir**\n\n» **por favor, forneça o nome correto da música ou inclua o nome do artista também**"
             )
             print(str(e))
             return
@@ -634,7 +634,7 @@ async def play(_, message: Message):
             results = YoutubeSearch(query, max_results=5).to_dict()
         except:
             await lel.edit(
-                "😕 **song name not detected**\n\n» **please provide the name of the song you want to play**"
+                "😒 **nome da música não detectado**\n\n» **por favor, forneça o nome da música que você quer tocar**"
             )
         # veez project
         try:
@@ -697,7 +697,7 @@ async def play(_, message: Message):
                 results[0]["views"]
             except Exception as e:
                 await lel.edit(
-                    "😕 **couldn't find song you requested**\n\n» **please provide the correct song name or include the artist's name as well**"
+                    "😕 **não conseguir encontrar música que você pediu**\n\n» **por favor, forneça o nome correto da música ou inclua o nome do artista também**"
                 )
                 print(str(e))
                 return
@@ -744,7 +744,7 @@ async def play(_, message: Message):
             callsmusic.pytgcalls.join_group_call(chat_id, file_path)
         except:
             await lel.edit(
-                "😕 **voice chat not found**\n\n» please turn on the voice chat first"
+                "😕 **bate-papo de voz não encontrado**\n\n» por favor, ligue o bate-papo de voz primeiro"
             )
             return
         await message.reply_photo(
@@ -767,14 +767,14 @@ async def lol_cb(b, cb):
         x, query, useer_id = typed_.split("|")
     except:
         await cb.message.edit(
-            "😕 **couldn't find song you requested**\n\n» **please provide the correct song name or include the artist's name as well**"
+            "😕 **não conseguir encontrar música que você pediu fi de rapariga**\n\n» **por favor, forneça o nome correto da música ou inclua o nome do artista também**"
         )
         return
     useer_id = int(useer_id)
     if cb.from_user.id != useer_id:
         await cb.answer("😒 Mal aí ademir, isso aqui não é para você !", show_alert=True)
         return
-    await cb.answer("🔄 Baixando o som ademir, aguarda aí beleza filho duma puta...", show_alert=True)
+    await cb.answer("🔄 Baixando o som ademir, aguarda aí beleza? filho duma puta...", show_alert=True)
     x = int(x)
     try:
         cb.message.reply_to_message.from_user.first_name
@@ -942,7 +942,7 @@ async def ytplay(_, message: Message):
 
     except Exception as e:
         await lel.edit(
-            "😕 **couldn't find song you requested**\n\n» **please provide the correct song name or include the artist's name as well**"
+            "😕 **não conseguir encontrar música que você pediu**\n\n» **Mermão, tem demência é? Coloque sapoha desse nome corretanente aí bro**"
         )
         print(str(e))
         return
@@ -998,7 +998,7 @@ async def ytplay(_, message: Message):
             callsmusic.pytgcalls.join_group_call(chat_id, file_path)
         except:
             await lel.edit(
-                "😕 **voice chat not found**\n\n» please turn on the voice chat first"
+                "😕 **bate-papo de voz não encontrado**\n\n» por favor, ligue o bate-papo de voz primeiro"
             )
             return
         await lel.delete()
