@@ -293,15 +293,3 @@ async def cbskip(_, query: CallbackQuery):
     await query.edit_message_text(
         "⏭ **Você pulou a música, agora iremos aderir a música que está na file(se tiver)**", reply_markup=BACK_BUTTON
     )
-
-
-@Client.on_message(command(["volume", f"volume@{BOT_USERNAME}"]) & other_filters)
-@authorized_users_only
-async def change_volume(client, message):
-    range = message.command[1]
-    chat_id = message.chat.id
-    try:
-        callsmusic.pytgcalls.change_volume_call(chat_id, volume=int(range))
-       await message.reply(f"✅ **volume set to:** ```{range}%```")
-    except Exception as e:
-       await message.reply(f"**error:** {e}")
