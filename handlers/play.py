@@ -103,7 +103,7 @@ async def generate_cover(title, thumbnail, ctitle):
     draw = ImageDraw.Draw(img)
     font = ImageFont.truetype("etc/typold.otf", 55)
     font2 = ImageFont.truetype("etc/finalfont.ttf", 75)
-    draw.text((25, 530), f"Tocando on {ctitle[:8]}", (0, 0, 0), font=font)
+    draw.text((25, 530), f"Tocando em {ctitle[:8]}", (0, 0, 0), font=font)
     draw.text((25, 615), f"{title[:15]}...", (0, 0, 0), font=font2)
     img.save("final.png")
     os.remove("temp.png")
