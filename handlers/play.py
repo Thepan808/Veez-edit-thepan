@@ -671,6 +671,7 @@ async def play(_, message: Message):
                     [InlineKeyboardButton(text="🗑 Fechar", callback_data="cls")],
                 ]
             )
+           await message.reply_photo(
                 photo=f"{THUMB_IMG}",
                 caption=toxxt,
                 reply_markup=keyboard,
