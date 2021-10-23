@@ -671,7 +671,9 @@ async def play(_, message: Message):
                     [InlineKeyboardButton(text="🗑 Fechar", callback_data="cls")],
                 ]
             )
-            photo=f"{THUMB_IMG}", caption=toxxt, reply_markup=keyboard
+                photo=f"{THUMB_IMG}",
+                caption=toxxt,
+                reply_markup=keyboard,
             )
 
             await lel.delete()
@@ -746,7 +748,7 @@ async def play(_, message: Message):
                 "😕 **bate-papo de voz não encontrado**\n\n» por favor, ligue o bate-papo de voz primeiro"
             )
             return
-        await b.send_photo(
+        await message.reply_photo(
             photo="final.png",
             caption=f"♦️ **Nome:** [{title[:65]}]({url})\n⏱ **Duração:** `{duration}`\n⚙️ **Status:** `Tocando`\n"
             + f"♦️ **Pedido pelo:** {message.from_user.mention}",
