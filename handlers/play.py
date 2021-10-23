@@ -749,7 +749,7 @@ async def play(_, message: Message):
                 "😕 **bate-papo de voz não encontrado**\n\n» por favor, ligue o bate-papo de voz primeiro"
             )
             return
-        await message.reply_photo(
+        await b.send_photo(
             photo="final.png",
             caption=f"♦️ **Nome:** [{title[:65]}]({url})\n⏱ **Duração:** `{duration}`\n⚙️ **Status:** `Tocando`\n"
             + f"♦️ **Pedido pelo:** {message.from_user.mention}",
