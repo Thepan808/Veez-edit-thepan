@@ -122,7 +122,7 @@ async def stop(_, message: Message):
             pass
 
         callsmusic.pytgcalls.leave_group_call(chat_id)
-        await message.reply_text("✅ **music playback has ended**")
+        await message.reply_text("✅ **A música que estava sendo tocada, acaba-se de ser encerrada... Ademir**")
 
 
 @Client.on_message(command(["skip", f"skip@{BOT_USERNAME}"]) & other_filters)
@@ -146,7 +146,7 @@ async def skip(_, message: Message):
         qeue.pop(0)
     if not qeue:
         return
-    await message.reply_text("⏭ **You've skipped to the next song.**")
+    await message.reply_text("⏭ **Você pulou a faixa, para reproduzir o próximo som.**")
 
 
 @Client.on_message(command(["auth", f"auth@{BOT_USERNAME}"]) & other_filters)
@@ -180,7 +180,7 @@ async def deautenticate(client, message):
             "🔴 user desatorizado.\n\nNão poderá usar os comandos de admins mais."
         )
     else:
-        await message.reply("✅ user already deauthorized!")
+        await message.reply("✅ user não autorizado!")
 
 
 # this is a anti cmd feature
@@ -293,3 +293,15 @@ async def cbskip(_, query: CallbackQuery):
     await query.edit_message_text(
         "⏭ **Você pulou a música, agora iremos aderir a música que está na file(se tiver)**", reply_markup=BACK_BUTTON
     )
+
+
+@Client.on_message(command(["volume", f"volume@{BOT_USERNAME}"]) & other_filters)
+@authorized_users_only
+async def change_volume(client, message):
+    range = message.command[1]
+    chat_id = message.chat.id
+    try:
+        callsmusic.pytgcalls.change_volume_call(chat_id, volume=int(range))
+       await message.reply(f"✅ **volume set to:** ```{range}%```")
+    except Exception as e:
+       await message.reply(f"**error:** {e}")
