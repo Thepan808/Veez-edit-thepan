@@ -671,16 +671,15 @@ async def play(_, message: Message):
                     [InlineKeyboardButton(text="🗑 Fechar", callback_data="cls")],
                 ]
             )
-           await message.reply_photo(
+            await message.reply_photo(
                 photo=f"{THUMB_IMG}",
                 caption=toxxt,
                 reply_markup=keyboard,
             )
-
             await lel.delete()
-            # veez project
+
             return
-            # veez project
+
         except:
             await lel.edit("__Não tem resultados para reproduzir esse link, estão irei recarregar para tocar...__")
 
