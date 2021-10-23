@@ -852,7 +852,7 @@ async def lol_cb(b, cb):
         qeue.append(appendable)
         callsmusic.pytgcalls.join_group_call(chat_id, file_path)
         await cb.message.delete()
-        await message.reply_photo(
+        await b.send_photo(
             chat_id,
             photo="final.png",
             caption=f"♦️ **Nome:** [{title[:65]}]({url})\n⏱ **Duração:** `{duration}`\n⚙️ **Status:** `Tocando`\n"
