@@ -101,10 +101,10 @@ async def generate_cover(title, thumbnail, ctitle):
     Image.alpha_composite(image5, image6).save("temp.png")
     img = Image.open("temp.png")
     draw = ImageDraw.Draw(img)
-    font = ImageFont.truetype("etc/Roboto-Medium.ttf", 55)
-    font2 = ImageFont.truetype("etc/finalfont.ttf", 80)
-    draw.text((20, 528), f"Tocando {ctitle[:10]}", (0, 0, 0), font=font)
-    draw.text((20, 610), f"{title[:20]}...", (0, 0, 0), font=font2)
+    font = ImageFont.truetype("etc/typold.otf", 55)
+    font2 = ImageFont.truetype("etc/finalfont.ttf", 75)
+    draw.text((25, 530), f"Tocando on {ctitle[:8]}", (0, 0, 0), font=font)
+    draw.text((25, 615), f"{title[:15]}...", (0, 0, 0), font=font2)
     img.save("final.png")
     os.remove("temp.png")
     os.remove("background.png")
@@ -672,7 +672,9 @@ async def play(_, message: Message):
                 ]
             )
             await message.reply_photo(
-                photo=f"{THUMB_IMG}", caption=toxxt, reply_markup=keyboard
+                photo=f"{THUMB_IMG}",
+                caption=toxxt,
+                reply_markup=keyboard,
             )
 
             await lel.delete()
