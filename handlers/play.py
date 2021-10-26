@@ -836,7 +836,7 @@ async def lol_cb(b, cb):
         await b.send_photo(
             chat_id,
             photo="final.png",
-            caption=f"🗃️ **Music adicionada para reprodução ♦️ »** `{position}`\n\n♦️ **Nome:** [{title[:35]}...]({url})\n⏱ **Duração:** `{duration}`\n♦️ **Pedido por:** {r_by.mention}",
+            caption=f"🗃️ **Música adicionada para reprodução ♦️ »** `{position}`\n\n♦️ **Nome:** [{title[:35]}...]({url})\n⏱ **Duração:** `{duration}`\n♦️ **Pedido por:** {r_by.mention}",
             reply_markup=keyboard,
         )
     else:
@@ -984,7 +984,7 @@ async def ytplay(_, message: Message):
         await lel.delete()
         await message.reply_photo(
             photo="final.png",
-            caption=f"♦️ **Music adicionada para fila ♦️ »** `{position}`\n\n♦️ **Nome:** [{title[:35]}...]({url})\n⏱ **Duração:** `{duration}`\n♦️ **Pedido por:** {message.from_user.mention}",
+            caption=f"♦️ **Música adicionada para fila ♦️ »** `{position}`\n\n♦️ **Nome:** [{title[:35]}...]({url})\n⏱ **Duração:** `{duration}`\n♦️ **Pedido por:** {message.from_user.mention}",
             reply_markup=keyboard,
         )
     else:
