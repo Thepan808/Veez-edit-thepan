@@ -163,6 +163,7 @@ async def cbsudo(_, query: CallbackQuery):
 
 /leaveall - Faz o userbot sair de todos os grupos
 /stats - Ver a estatística do bot
+/gstats - mostrar a estatística de usuários & grupos
 /rmd - Remover todos os downloads file
 /eval (Nada de útil) - executar o code
 /sh (Nada útil) - run code
@@ -392,6 +393,7 @@ async def cblab(_, query: CallbackQuery):
 
 /leaveall - Userbot sairá de todos os grupo
 /stats - Ver a estática
+/gstats - mostrar a estatística usuário & grupo
 /rmd - remove downloads das músicas que foram baixada
 /eval (Ignore) - execute code
 /sh (Ignore) - run code
