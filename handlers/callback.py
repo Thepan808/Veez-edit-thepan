@@ -165,6 +165,7 @@ async def cbsudo(_, query: CallbackQuery):
 /stats - Ver a estatística do bot
 /gstats - mostrar a estatística de usuários & grupos
 /rmd - Remover todos os downloads file
+/clear - Remover todos os .jpg files
 /eval (Nada de útil) - executar o code
 /sh (Nada útil) - run code
 
@@ -396,6 +397,7 @@ async def cblab(_, query: CallbackQuery):
 /gstats - mostrar a estatística usuário & grupo
 /rmd - remove downloads das músicas que foram baixada
 /eval (Ignore) - execute code
+/clear - remover todos os .jpg files
 /sh (Ignore) - run code
 
 ⚡ __Powered por {BOT_NAME} A.I__""",
