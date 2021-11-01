@@ -50,7 +50,7 @@ async def _human_time_duration(seconds):
 @Client.on_message(
     command(["start", f"start@{BOT_USERNAME}"]) & filters.private & ~filters.edited
 )
-async def start_(client: Client, message: Message):
+async def start_private(client: Client, message: Message):
     await message.reply_text(
         f"""➜ **Bem vindo(a) {message.from_user.mention} !**\n
 💭 **[{BOT_NAME}](https://t.me/{BOT_USERNAME}) Permite que você toque música em grupos através dos novos bate-papos de voz do Telegram!**
@@ -93,7 +93,7 @@ async def start_(client: Client, message: Message):
 @Client.on_message(
     command(["start", f"start@{BOT_USERNAME}"]) & filters.group & ~filters.edited
 )
-async def start(client: Client, message: Message):
+async def start_group(client: Client, message: Message):
     current_time = datetime.utcnow()
     uptime_sec = (current_time - START_TIME).total_seconds()
     uptime = await _human_time_duration(int(uptime_sec))
