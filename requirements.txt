@@ -1,6 +1,6 @@
-pyrogram
+git+https://github.com/pyrogram/pyrogram@master
 tgcrypto
-pytgcalls==2.1.0
+py-tgcalls==0.8.1rc1
 python-dotenv
 youtube-search-python
 requests
@@ -16,8 +16,14 @@ psutil
 wget
 motor
 dnspython
-yt_dlp
+yt-dlp
 httpx==0.13.3
 heroku3
 gitpython
 pymongo
+lyricsgenius
+git+https://github.com/yt-dlp/yt-dlp@master
+hurry.filesize
+hachoir
+googletrans==4.0.0-rc1
+pytube
