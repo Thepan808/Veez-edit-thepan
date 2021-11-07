@@ -1,6 +1,6 @@
-git+https://github.com/pyrogram/pyrogram@master
+pyrogram
 tgcrypto
-py-tgcalls==0.8.1rc1
+py-tgcalls
 python-dotenv
 youtube-search-python
 requests
@@ -21,9 +21,3 @@ httpx==0.13.3
 heroku3
 gitpython
 pymongo
-lyricsgenius
-git+https://github.com/yt-dlp/yt-dlp@master
-hurry.filesize
-hachoir
-googletrans==4.0.0-rc1
-pytube
